@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Log in{% endblock%}
+{% block content %}
+<div class="shell-container">
+    <div class="container login-container mt-5 animate__animated animate__fadeInRight">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h1 class="text-center text-light mb-4">Вход</h1>
+                <form method="post" action=".">
+                    {% csrf_token %}
+                    <div class="py-2 form-group text-center">
+                        <!-- Используем placeholder для отображения текста внутри инпута -->
+                        <input type="text" name="username" class="form-control" placeholder="Имя пользователя" required>
+                    </div>
+                    <div class="py-2 form-group text-center">
+                        <!-- Используем placeholder для отображения текста внутри инпута -->
+                        <input type="password" name="password" class="form-control" placeholder="Пароль" required>
+                    </div>
+                    <div class=" py-2 text-center">
+                        <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

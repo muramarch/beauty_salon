@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %}Add Appointment{% endblock %}
+{% block content %}
+    <div style="text-align: center; padding: 50px;">
+        <h1>Запись</h1>
+        <form method="post" action=".">
+            {% csrf_token %}
+            <div style="margin-bottom: 20px;">
+                <label for="{{ form.client_name.id_for_label }}">Имя клиента</label>
+                {{ form.client_name }}
+            </div>
+            <div style="margin-bottom: 20px;">
+                <label for="{{ form.client_phone_number.id_for_label }}">Номер телефона клиента</label>
+                {{ form.client_phone_number }}
+            </div>
+            <div style="margin-bottom: 20px;">
+                <label for="{{ form.master.id_for_label }}">Выберите мастера</label>
+                <div style="display: flex; flex-wrap: wrap;">
+                    {% for master in form.master.field.queryset %}
+                        <div style="margin: 10px;">
+                            <img style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover;" src="{{ master.photo.url }}" alt="{{ master.user.username }}">
+                            <br>
+                            <input type="radio" name="{{ form.master.name }}" value="{{ master.id }}">
+                            <label>{{ master.user.username }}</label>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div style="margin-bottom: 20px;">
+                <label for="{{ form.service.id_for_label }}">Выберите услугу</label>
+                <select id="{{ form.service.id_for_label }}" name="{{ form.service.name }}">
+                    {% for service in form.service.field.queryset %}
+                        <option value="{{ service.id }}">{{ service.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div style="margin-bottom: 20px;">
+                <label for="{{ form.date.id_for_label }}">Дата и время</label>
+                {{ form.date }}
+            </div>
+            <div style="margin-bottom: 20px;">
+                <label for="{{ form.description.id_for_label }}">Описание</label>
+                {{ form.description }}
+            </div>
+            <button style="background-color: #007bff; color: white; padding: 12px 24px; border: none; border-radius: 5px; cursor: pointer;">Записаться</button>
+        </form>
+    </div>
+
+    <script>
+        {% if appointment_created %}
+        alert("Вы записаны, ожидайте звонка!");
+        window.location.href = "{% url 'index' %}";
+        {% endif %}
+    </script>
+{% endblock %}
