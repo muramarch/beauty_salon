@@ -7,31 +7,39 @@ from apps.masters.models import Master
 from apps.services.models import Service
 
 
-def select_service(request):
+def select_master(request):
+    if request.method == 'POST':
+        form = MasterForm(request.POST)
+        if form.is_valid():
+            master_id = form.cleaned_data['master'].id
+            return redirect('select_service', master_id=master_id)
+    else:
+        form = MasterForm()
+    return render(request, 'appointments/select_master.html', {'master_form': form})
+
+
+def select_service(request, master_id):
+    selected_master = Master.objects.get(pk=master_id)
+
     if request.method == 'POST':
         form = ServiceForm(request.POST)
         if form.is_valid():
-            service_id = form.cleaned_data['service'].id  # Get the ID of the selected service
-            return redirect('select_master', service_id=service_id)
+            service_id = form.cleaned_data['service'].id
+            return redirect('select_date', service_id=service_id, master_id=master_id)
     else:
+        # Фильтруем услуги на основе выбранного мастера
+        available_services = Service.objects.filter(master=selected_master)
         form = ServiceForm()
-    return render(request, 'appointments/select_service.html', {'service_form': form})
 
-                                                                
-                                                                
-def select_master(request, service_id):
-    selected_service = Service.objects.get(pk=service_id)
-    
-    if request.method == 'POST':
-        form = MasterForm(request.POST, selected_service=selected_service)
-        if form.is_valid():
-            master_id = form.cleaned_data['master']
-            return redirect('select_date', service_id=service_id, master_id=master_id.id)   
-    else:
-        form = MasterForm(selected_service=selected_service)
-    return render(request, 'appointments/select_master.html', {'master_form': form, 'selected_service': selected_service})
+    # Обновляем форму, чтобы она отображала только доступные услуги для выбранного мастера
+    form.fields['service'].queryset = available_services
 
-  
+    return render(request, 'appointments/select_service.html', {
+        'service_form': form,
+        'selected_master': selected_master,
+    })
+
+
 def select_date(request, service_id, master_id):
     selected_service = Service.objects.get(pk=service_id)
     selected_master = Master.objects.get(pk=master_id)

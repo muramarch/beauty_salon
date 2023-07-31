@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>Выберите мастера для услуги "{{ selected_service }}"</h1>
+<h1>Выберите мастера</h1>
 <form method="post">
     {% csrf_token %}
     {{ master_form.as_p }}
