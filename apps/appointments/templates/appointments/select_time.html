@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Select Time for Appointment</h1>
+<p>Service: {{ selected_service.name }}</p>
+<p>Master: {{ selected_master.user.first_name }}</p>
+<p>Date: {{ selected_date }}</p>
+<form method="POST">
+    {% csrf_token %}
+    <label for="time_slot">Select Time:</label>
+    <select name="time_slot" id="time_slot">
+        {% for time_slot in available_time_slots %}
+            <option value="{{ time_slot }}">{{ time_slot|time:"H:i" }}</option>
+        {% endfor %}
+    </select>
+    <input type="submit" value="Book Appointment">
+</form>
+{% endblock %}

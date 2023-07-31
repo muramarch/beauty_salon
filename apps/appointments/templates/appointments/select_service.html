@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Select Service</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ service_form.as_p }}
+    <input type="submit" value="Next">
+</form>
+{% endblock %}

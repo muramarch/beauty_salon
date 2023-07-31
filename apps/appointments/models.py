@@ -1,4 +1,4 @@
-from django.utils import timezone
+# apps/appointments/models.py
 from django.db import models
 from apps.clients.models import Client
 from apps.masters.models import Master
@@ -14,12 +14,8 @@ class Appointment(models.Model):
 
     def __str__(self):
         return f'Мастер: {self.master} - Услуга: {self.service} - Клиент: {self.client}'
-    
-    def save(self, *args, **kwargs):
-        if self.date <= timezone.now():
-            self.status = 'completed'
-        super().save(*args, **kwargs)
 
+    
 
 class ConfirmationCode(models.Model):
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
