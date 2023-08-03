@@ -24,7 +24,7 @@ urlpatterns = [
     path('', include('apps.core.urls')),
     path('admin/', admin.site.urls),
     path('masters/', include('apps.masters.urls')),
-    path('appointments/', include('apps.appointments.urls')),
+    path('appointments/', include('apps.appointments.urls', namespace='appointments')),
 ]
 
 if settings.DEBUG:

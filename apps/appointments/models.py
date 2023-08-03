@@ -8,7 +8,7 @@ class Appointment(models.Model):
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
     master = models.ForeignKey(Master, on_delete=models.CASCADE)
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
-    date = models.DateTimeField()
+    date = models.DateTimeField(null=True, blank=True, default=None)
     description = models.TextField(blank=True, null=True)
     status = models.CharField(max_length=20, default='scheduled')
 

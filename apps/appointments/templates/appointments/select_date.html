@@ -1,13 +1,22 @@
 {% extends 'base.html' %}
+
 {% block content %}
-<h1>Выберите дату</h1>
-<p>Service: {{ selected_service.name }}</p>
-<p>Master: {{ selected_master.user.first_name }}</p>
-<ul>
-    {% for date in available_days %}
-        <li>
-            <a href="{% url 'select_time' selected_service.id selected_master.id date %}">{{ date }}</a>
-        </li>
-    {% endfor %}
-</ul>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col">
+            <h1>Выберите дату</h1>
+            <p>Услуга: {{ selected_service.name }}</p>
+            <p>Специалист: {{ selected_master.user.first_name }}</p>
+            <ul class="list-group">
+                {% for date in available_days %}
+                    <li class="list-group-item">
+                        <a href="{% url 'appointments:select_time' selected_service.id selected_master.id date %}">
+                            {{ date }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
 {% endblock %}

@@ -1,9 +1,51 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>Выберите услугу мастера {{ selected_master.user.first_name }}</h1>
+<style>
+    .service-container {
+        position: relative;
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-bottom: 10px;
+        cursor: pointer;
+    }
+
+    .service-container:hover {
+        border-color: #999;
+    }
+
+    .service-container input[type="radio"] {
+        display: none;
+    }
+
+    /* Применяем стили к выбранному контейнеру */
+    .service-container.checked {
+        outline: 2px solid #007bff;
+    }
+</style>
+<h1>Выберите услугу специалиста {{ selected_master.user.first_name }}</h1>
 <form method="post">
     {% csrf_token %}
-    {{ service_form.as_p }}
+    {% for service in service_form.service.field.queryset %}
+        <label class="service-container" onclick="selectService({{ service.pk }})">
+            <input type="radio" name="service" value="{{ service.pk }}">
+            {{ service }}
+        </label>
+    {% endfor %}
+    <input type="hidden" id="selected_service" name="service">
     <input type="submit" value="Next">
 </form>
+
+<script>
+    function selectService(serviceId) {
+        const containers = document.querySelectorAll('.service-container');
+        containers.forEach(container => {
+            container.classList.remove('checked');
+        });
+        const selectedContainer = document.querySelector(`.service-container input[value="${serviceId}"]`);
+        if (selectedContainer) {
+            selectedContainer.parentNode.classList.add('checked');
+            document.getElementById("selected_service").value = serviceId;
+        }
+    }
+</script>
 {% endblock %}

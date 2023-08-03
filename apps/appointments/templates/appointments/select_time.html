@@ -1,18 +1,51 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<style>
+    .time-slot-container {
+        position: relative;
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-bottom: 10px;
+        cursor: pointer;
+    }
+
+    .time-slot-container:hover {
+        border-color: #999;
+    }
+
+    /* Применяем стили к выбранному контейнеру */
+    .time-slot-container.checked {
+        outline: 2px solid #007bff;
+    }
+</style>
 <h1>Выберите время</h1>
 <p>Service: {{ selected_service.name }}</p>
 <p>Master: {{ selected_master.user.first_name }}</p>
 <p>Date: {{ selected_date }}</p>
 <form method="POST">
     {% csrf_token %}
-    <label for="time_slot">Select Time:</label>
-    <select name="time_slot" id="time_slot">
-        {% for time_slot in available_time_slots %}
-            <option value="{{ time_slot }}">{{ time_slot|time:"H:i" }}</option>
-        {% endfor %}
-    </select>
+    {% for time_slot in available_time_slots %}
+        <label class="time-slot-container" onclick="selectTime('{{ time_slot|time:"H:i" }}')">
+            <input type="radio" name="time_slot" value="{{ time_slot|time:"H:i" }}" style="display: none;">
+            {{ time_slot|time:"H:i" }}
+        </label>
+    {% endfor %}
+    <input type="hidden" id="selected_time" name="time_slot">
     <input type="submit" value="Book Appointment">
 </form>
+
+<script>
+    function selectTime(time) {
+        const containers = document.querySelectorAll('.time-slot-container');
+        containers.forEach(container => {
+            container.classList.remove('checked');
+        });
+        const selectedContainer = document.querySelector(`.time-slot-container input[value="${time}"]`);
+        if (selectedContainer) {
+            selectedContainer.parentNode.classList.add('checked');
+            document.getElementById("selected_time").value = time;
+        }
+    }
+</script>
 {% endblock %}

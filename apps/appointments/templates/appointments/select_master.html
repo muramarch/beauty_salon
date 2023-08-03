@@ -1,9 +1,35 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>Выберите мастера</h1>
-<form method="post">
-    {% csrf_token %}
-    {{ master_form.as_p }}
-    <input type="submit" value="Далее">
-</form>
+<style>
+  .card.checked {
+    border: 2px solid blue;
+  }
+</style>
+<div class="container">
+    <h1 class="text-center">Выберите специалиста</h1>
+    <form method="post" class="text-center">
+        {% csrf_token %}
+        {% for master in master_form.master.field.queryset %}
+        <label class="card my-3" style="width: 200px; display: inline-block; cursor: pointer;">
+            <div class="card-body">
+                <img src="{{ master.photo.url }}" alt="{{ master.name }}" class="card-img-top rounded-circle" style="width: 100px; height: 100px; object-fit: cover;">
+                <p class="card-text">{{ master.user.first_name }}</p>
+            </div>
+            <input type="radio" name="{{ master_form.master.name }}" value="{{ master.pk }}" style="display: none;">
+        </label>
+        {% endfor %}
+        <div class="text-center"> <!-- Обертка для кнопки -->
+            <button type="submit" class="btn btn-primary">Далее</button>
+        </div>
+    </form>
+</div>
+<script>
+  const cards = document.querySelectorAll('.card');
+  cards.forEach(card => {
+    card.addEventListener('click', () => {
+      cards.forEach(c => c.classList.remove('checked'));
+      card.classList.add('checked');
+    });
+  });
+</script>
 {% endblock %}
