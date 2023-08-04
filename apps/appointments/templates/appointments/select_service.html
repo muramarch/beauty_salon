@@ -18,7 +18,12 @@
     }
 
     /* Применяем стили к выбранному контейнеру */
-    .service-container.checked {
+    .service-container input[type="radio"]:checked + span {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
         outline: 2px solid #007bff;
     }
 </style>
@@ -26,9 +31,9 @@
 <form method="post">
     {% csrf_token %}
     {% for service in service_form.service.field.queryset %}
-        <label class="service-container" onclick="selectService({{ service.pk }})">
+        <label class="service-container">
             <input type="radio" name="service" value="{{ service.pk }}">
-            {{ service }}
+            {{ service }} <span></span>
         </label>
     {% endfor %}
     <input type="hidden" id="selected_service" name="service">
@@ -36,16 +41,21 @@
 </form>
 
 <script>
-    function selectService(serviceId) {
-        const containers = document.querySelectorAll('.service-container');
-        containers.forEach(container => {
-            container.classList.remove('checked');
+    const serviceContainers = document.querySelectorAll('.service-container');
+
+    serviceContainers.forEach(container => {
+        container.addEventListener('click', () => {
+            const input = container.querySelector('input[type="radio"]');
+            document.getElementById("selected_service").value = input.value;
+
+            // Remove checked class from all containers
+            serviceContainers.forEach(c => {
+                c.classList.remove('checked');
+            });
+
+            // Add checked class to the clicked container
+            container.classList.add('checked');
         });
-        const selectedContainer = document.querySelector(`.service-container input[value="${serviceId}"]`);
-        if (selectedContainer) {
-            selectedContainer.parentNode.classList.add('checked');
-            document.getElementById("selected_service").value = serviceId;
-        }
-    }
+    });
 </script>
 {% endblock %}
