@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
-<form method="post">
-    {% csrf_token %}
-    {{ client_form.as_p }}
-    <button type="submit">Book Appointment</button>
+<div class="container-full-height">
+  <form method="post">
+      {% csrf_token %}
+      {{ client_form.as_p }}
+      <button type="submit">Book Appointment</button>
   </form>
-  
+</div>
 {% endblock %}

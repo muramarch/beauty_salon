@@ -19,22 +19,23 @@
         outline: 2px solid #007bff;
     }
 </style>
-<h1>Выберите время</h1>
-<p>Service: {{ selected_service.name }}</p>
-<p>Master: {{ selected_master.user.first_name }}</p>
-<p>Date: {{ selected_date }}</p>
-<form method="POST">
-    {% csrf_token %}
-    {% for time_slot in available_time_slots %}
-        <label class="time-slot-container" onclick="selectTime('{{ time_slot|time:"H:i" }}')">
-            <input type="radio" name="time_slot" value="{{ time_slot|time:"H:i" }}" style="display: none;">
-            {{ time_slot|time:"H:i" }}
-        </label>
-    {% endfor %}
-    <input type="hidden" id="selected_time" name="time_slot">
-    <input type="submit" value="Book Appointment">
-</form>
-
+<div class="container-full-height">
+    <h1>Выберите время</h1>
+    <p>Service: {{ selected_service.name }}</p>
+    <p>Master: {{ selected_master.user.first_name }}</p>
+    <p>Date: {{ selected_date }}</p>
+    <form method="POST">
+        {% csrf_token %}
+        {% for time_slot in available_time_slots %}
+            <label class="time-slot-container" onclick="selectTime('{{ time_slot|time:"H:i" }}')">
+                <input type="radio" name="time_slot" value="{{ time_slot|time:"H:i" }}" style="display: none;">
+                {{ time_slot|time:"H:i" }}
+            </label>
+        {% endfor %}
+        <input type="hidden" id="selected_time" name="time_slot">
+        <input type="submit" value="Book Appointment">
+    </form>
+</div>
 <script>
     function selectTime(time) {
         const containers = document.querySelectorAll('.time-slot-container');

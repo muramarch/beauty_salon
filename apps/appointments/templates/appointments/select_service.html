@@ -27,19 +27,20 @@
         outline: 2px solid #007bff;
     }
 </style>
-<h1>Выберите услугу специалиста {{ selected_master.user.first_name }}</h1>
-<form method="post">
-    {% csrf_token %}
-    {% for service in service_form.service.field.queryset %}
-        <label class="service-container">
-            <input type="radio" name="service" value="{{ service.pk }}">
-            {{ service }} <span></span>
-        </label>
-    {% endfor %}
-    <input type="hidden" id="selected_service" name="service">
-    <input type="submit" value="Next">
-</form>
-
+<div class="container-full-height">
+    <h1>Выберите услугу специалиста {{ selected_master.user.first_name }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {% for service in service_form.service.field.queryset %}
+            <label class="service-container">
+                <input type="radio" name="service" value="{{ service.pk }}">
+                {{ service }} <span></span>
+            </label>
+        {% endfor %}
+        <input type="hidden" id="selected_service" name="service">
+        <input type="submit" value="Next">
+    </form>
+</div>
 <script>
     const serviceContainers = document.querySelectorAll('.service-container');
 

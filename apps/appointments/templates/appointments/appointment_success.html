@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>Appointment Successfully Booked</h1>
-<p>Client: {{ appointment.client }}</p>
-<p>Service: {{ selected_service }}</p>
-<p>Master: {{ selected_master }}</p>
-<p>Date: {{ selected_date }}</p>
-<p>Time: {{ selected_time }}</p>
-<!-- Add any additional information you want to display to the user -->
-
+<div class="container-full-height">
+    <h1>Appointment Successfully Booked</h1>
+    <p>Client: {{ appointment.client }}</p>
+    <p>Service: {{ selected_service }}</p>
+    <p>Master: {{ selected_master }}</p>
+    <p>Date: {{ selected_date }}</p>
+    <p>Time: {{ selected_time }}</p>
+</div>
 {% endblock %}
